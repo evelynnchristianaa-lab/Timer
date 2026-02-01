@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fokus & Lofi</title>
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: #f4f2ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .card {
+    background: #f9f8f6;
+    border-radius: 20px;
+    padding: 30px;
+    width: 900px;
+    display: flex;
+    gap: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .left {
+    flex: 1;
+  }
+
+  .timer-circle {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    border: 10px solid #d6c7bd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .time {
+    font-size: 48px;
+    font-weight: 600;
+  }
+
+  .label {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #777;
+  }
+
+  .right {
+    flex: 1;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background: #e6ddd6;
+    cursor: pointer;
+  }
+
+  .tab.active {
+    background: #cdb8a9;
+    color: #fff;
+  }
+
+  .settings {
+    margin-bottom: 20px;
+  }
+
+  .settings label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .settings input {
+    width: 60px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .setting-row {
+    display: flex;
+    gap: 20px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: none;
+    background: #cdb8a9;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }#ffffff
+
+  .btn.secondary {
+    background: #e6ddd6;
+    color: #555;
+  }
+
+  .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    color: #777;
+  }
+
+  .stats div {
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="left">
+    <h1>Fokus & Lofi</h1>
+    <p>Temukan ritme produktivitas Anda.</p>
+
+    <div class="timer-circle">
+      <div class="time" id="time">25:00</div>
+      <div class="label">SESI FOKUS</div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="tabs">
+      <div class="tab active">Pomodoro</div>
+      <div class="tab">Istirahat</div>
+      <div class="tab">Panjang</div>
+    </div>
+
+    <div class="settings">
+      <label>ATUR DURASI (MENIT)</label>
+      <div class="setting-row">
+        <div>
+          <label>KERJA</label>
+          <input type="number" id="work" value="25">
+        </div>
+        <div>
+          <label>PENDEK</label>
+          <input type="number" value="5">
+        </div>
+        <div>
+          <label>PANJANG</label>
+          <input type="number" value="15">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="start()">Mulai Sesi</button>
+    <button class="btn secondary" onclick="reset()">Atur Ulang</button>
+
+    <div class="stats">
+      <div>
+        <strong id="sessions">0</strong><br>Sesi Selesai
+      </div>
+      <div>
+        <strong id="minutes">0</strong><br>Menit Fokus
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let timer;
+  let seconds = 1500;
+  let sessions = 0;
+  let minutesFocused = 0;
+
+  function updateDisplay() {
+    let m = Math.floor(seconds / 60);
+    let s = seconds % 60;
+    document.getElementById("time").textContent =
+      `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  function start() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (seconds > 0) {
+        seconds--;
+        updateDisplay();
+      } else {
+        clearInterval(timer);
+        sessions++;
+        minutesFocused += parseInt(document.getElementById("work").value);
+        document.getElementById("sessions").textContent = sessions;
+        document.getElementById("minutes").textContent = minutesFocused;
+        alert("Sesi fokus selesai ");
+      }
+    }, 1000);
+  }
+
+  function reset() {
+    clearInterval(timer);
+    seconds = document.getElementById("work").value * 60;
+    updateDisplay();
+  }
+</script>
+
+</body>
+</html
